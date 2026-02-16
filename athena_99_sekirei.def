@@ -1,0 +1,32 @@
+;[mugen-WIN-only-def]
+[Info]
+name="Athena99"
+displayname = "Athena_99"
+versiondate = 19**,03,14;履歴参照
+mugenversion = 04,14,2002
+author = "sekirei"
+pal.defaults = 1,4,2,5,3,6;,7,10,8,11,9,12;クイック起動時にも反映？
+;localcoord = 320,240
+;localcoord = 400,240
+
+[Files]
+cmd     = athena_99-cmd.cns
+cns     = athena_99-D.cns
+st      = athena_99-N.cns
+st1     = athena_99-S.cns
+st2     = athena_99-H.cns
+st3     = athena_99-E.cns
+st4     = athena_99-3.cns
+st5     = athena_99-2.cns
+st6     = athena_99-sys.cns
+st7     = !!!config.txt
+stcommon= athena_99-C.cns
+sprite  = athena_99.sff
+anim    = athena_99.air
+sound   = athena_99.snd
+pal1    = act/athena_99_01.act
+pal2    = act/athena_99_02.act
+pal3    = act/athena_99_03.act
+pal4    = act/athena_99_04.act
+pal5    = act/athena_99_05.act
+pal6    = act/athena_99_06.act

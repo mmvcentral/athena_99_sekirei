@@ -1,0 +1,2718 @@
+;removeongethit = 1
+;persistent = 0
+;ignorehitpause = 1
+;supermovetime = 999
+;pausemovetime = 999
+;============================================================================
+;必殺技
+;============================================================================
+;弱・サイコボール
+[Statedef 1000]
+type = S
+movetype = A
+physics = S
+juggle = 5
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,63)
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1000
+trigger1 = time=0
+value = 1000
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;サイコボール！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem=5
+value = s3,15
+channel = 0
+
+[State 1]
+type = Explod
+trigger1 = animelem=4
+anim = 1072
+ID = 1072
+pos = 31,-61
+postype = P1
+bindtime = -1
+sprpriority = 3
+ownpal = 1
+removeongethit = 1
+
+;サイコボール
+[State 1]
+type = helper
+trigger1 = !Numhelper(1000)
+trigger1 = animelem=5,=1
+name = "tama"
+id = 1000
+pos = 31,-61
+postype = p1
+stateno = 1070
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = ChangeState
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;============================================================================
+;強・サイコボール
+[Statedef 1050]
+type = S
+movetype = A
+physics = S
+juggle = 5
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,63)
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1050
+trigger1 = time=0
+value = 1050
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;サイコボール！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem=5
+value = s3,15
+channel = 0
+
+[State 1]
+type = Explod
+trigger1 = animelem=4,=2
+anim = 1072
+ID = 1072
+pos = 31,-61
+postype = P1
+bindtime = -1
+sprpriority = 3
+ownpal = 1
+removeongethit = 1
+
+;サイコボール
+[State 1]
+type = helper
+trigger1 = !Numhelper(1050)
+trigger1 = animelem=5,=1
+name = "tama"
+id = 1050
+pos = 31,-61
+postype = p1
+stateno = 1070
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = ChangeState
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;===========================================================================
+;サイコボール本体
+[Statedef 1070]
+type = A
+movetype = I
+physics = N
+anim = 1070
+juggle = 8
+ctrl = 0
+sprpriority = 4
+
+;反射時のリフレク撤去
+[State 1]
+type = Removeexplod
+trigger1 = time=0
+ID = 1270
+
+[State 1]
+type = Posadd
+trigger1 = animelem=1
+x = ifelse(Ishelper(1200)||Ishelper(1250),81,0)
+y = ifelse(Ishelper(1200)||Ishelper(1250),-61,0)
+
+[State 1]
+type = PlaySnd
+trigger1 = animelem=1
+value = s2,ifelse(Ishelper(1200)||Ishelper(1250),7,2)
+
+[state 1]
+type = null
+triggerall = time=0
+triggerall = var(2):=1075;着弾air
+triggerall = var(56):=root,var(56)||1
+trigger1 = fvar(1):=ifelse((root,stateno=1000),3.8,5.5)
+trigger1 = var(30):=ifelse((root,stateno=1000),82,94)
+
+[state 1]
+type = velset
+trigger1 = time=0
+x = fvar(1)
+
+[State 1]
+type = Projectile
+trigger1 = time=0
+attr = A, SP
+projID = 1000
+projanim = 1071
+projremanim = -1
+projhitanim = -1
+projshadow = 68,68,68
+projpriority = 1
+offset = 0,0
+velocity = fvar(1)
+ownpal = 1
+damage = ceil(var(30)*root,fvar(22)),7
+priority = 4
+animtype = Hard
+hitflag = MAF
+guardflag = M
+pausetime = 0,12
+sparkno = -1;s62
+sparkxy = 20,-25
+guard.sparkno = -1;s72
+hitsound = -1;s1,5
+guardsound = -1;s121,0
+ground.type = Low
+ground.slidetime = 23
+ground.hittime  = 23
+ground.velocity = -12
+guard.velocity = -12
+air.animtype = Back
+air.fall = 1
+fall.recover = 0
+air.velocity = -3,-3.6
+airguard.velocity = -3,-1.8
+down.velocity = -6,0
+yaccel = .5
+air.juggle = ifelse(root,var(3),20,8)
+ID = 1000
+getpower = 143,143
+givepower = 21,21
+
+[State 1]
+type = ChangeState
+trigger1 = root,NumProjid(1000)!
+value = 1075
+;===========================================================================
+;サイコボール／サイコシュート・着弾
+[Statedef 1075]
+type = A
+movetype = I
+physics = N
+anim = var(2)
+velset = 0,0
+ctrl = 0
+
+[State 1]
+type = posadd
+trigger1 = time =0
+x = 10
+
+[State 1]
+type = playsnd
+trigger1 = root,Projhit1000=1,<2||root,Projhit1400=1,<2
+trigger1 = enemynear(root,var(47)),stateno!=[150,155]
+trigger1 = enemynear(root,var(47)),movetype=H
+trigger1 = time =0
+value = s1,ifelse((root,Projhit1400=1,<2),4,2)
+
+[State 1]
+type = playsnd
+trigger1 = root,Projhit3080=1,<2
+trigger1 = enemynear(root,var(47)),stateno!=[150,155]
+trigger1 = enemynear(root,var(47)),movetype=H
+trigger1 = time =0
+value = s2,0
+
+[State 1]
+type = playsnd
+trigger1 = root,Projguarded=1,<2
+trigger1 = enemynear(root,var(47)),stateno=[150,155]
+trigger1 = enemynear(root,var(47)),movetype=H
+trigger1 = time =0
+value = s121,0
+
+[State 1]
+type = Explod
+triggerall = enemynear(root,var(47)),movetype=H
+trigger1 = root,Projhit=1,<2
+trigger1 = var(0):=62
+trigger2 = root,Projguarded=1,<2
+trigger2 = var(0):=72
+Anim = var(0)
+ID = var(0)
+pos = 20,-5+((random%3)*2)
+postype = p1
+scale = 1,1
+ownpal = 1
+ontop = 1
+bindtime = 1
+sprpriority = 10
+
+[State 1]
+type = Destroyself
+trigger1 = animtime=0 || root,projhit=0&&Frontedgedist < -50;画面外で即消滅
+trigger2 = root,fvar(32)
+;============================================================================
+;弱・サイコソード
+[Statedef 1100]
+type = U
+movetype = A
+physics = N
+juggle = 8
+poweradd = ifelse(Prevstateno=4050,0,104)
+ctrl = 0
+
+[State 0]
+type = null
+triggerall = Time = 0
+trigger1 = var(2):=1170;着地air
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1100
+trigger1 = time=0
+value = 1100
+
+;テレポからの派生----------
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+;追随ＥＦ
+[State 1]
+type = helper
+trigger1 = !Numhelper(3)
+trigger1 = time=0
+name = "EF"
+ID = 3
+pos = 0,0
+postype = p1
+stateno = 3
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = nothitby
+trigger1 = var(5)!=1500
+trigger1 = animelem=3,<0
+value = ,AA,AP
+
+[State 1]
+type = nothitby
+trigger1 = var(5)=1500
+trigger1 = animelem=5,<0
+value = SCA
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;サイコソード！
+[State 1,voice]
+type = playsnd
+trigger1 = animelem=3
+value = s3,16
+channel = 0
+
+[state 1]
+type = playsnd
+trigger1 = animelem=5
+value = s2,9
+
+[state 1]
+type = statetypeset
+trigger1 = animelem=6,>=0
+value = A
+
+[state 1]
+type = posadd
+trigger1 = animelem=6
+y = -6
+
+[state 1]
+type = velset
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+x = 0
+y = 0
+
+[state 1]
+type = velset
+trigger1 = animelem=6
+x = 2
+y = -5
+
+[state 1]
+type = velset
+trigger1 = animelem=7,>=3
+x = 0
+
+[state 1]
+type = veladd
+trigger1 = animelem=7,>0
+y = .3
+
+;地上①
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=3
+attr = S,SA
+animtype = hard
+damage = ceil(32*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,-37
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1)
+air.velocity = -0.5,-12
+airguard.velocity = -2,-6.25
+fall = 0
+air.fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1100
+
+;地上②
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=5
+attr = S,SA
+animtype = hard
+damage = ceil(32*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,-67
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1),-12
+air.velocity = -0.5,-12
+airguard.velocity = -2,-3.25
+fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1100
+
+;上昇
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=7
+attr = A,SA
+animtype = hard
+damage = ceil(32*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,-77
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1),-12
+air.velocity = -0.5,-12
+airguard.velocity = -2,-3.25
+fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1100
+
+;すり抜け防止
+[State 1]
+type = helper
+trigger1 = Numhelper(4649)=0
+trigger1 = animelem=1
+name="4649"
+id = 4649
+postype = P1
+pos = 0,0
+stateno = 4649
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+size.xscale = 1
+size.yscale = 1
+persistent = 0
+
+[state 1]
+type = null
+triggerall = movehit
+trigger1 = var(7):=1;AI用／通常技抑止
+
+[state 1]
+type = changestate
+trigger1 = vel y >0 && pos y >=0
+value = 1170
+;============================================================================
+;強・サイコソード
+[Statedef 1150]
+type = U
+movetype = A
+physics = N
+juggle = 8-var(1)*6
+poweradd = ifelse(Prevstateno=4050,0,104)
+ctrl = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[State 1]
+type = null
+trigger1 = time=0
+trigger1 = var(2):=1175;着地air
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1150
+trigger1 = time=0
+value = 1150
+
+;テレポからの派生----------
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+;追随ＥＦ
+[State 1]
+type = helper
+trigger1 = !Numhelper(3)
+trigger1 = time=0
+name = "EF"
+ID = 3
+pos = 0,0
+postype = p1
+stateno = 3
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = nothitby
+trigger1 = var(5)!=1500
+trigger1 = animelem=3,<0
+value = ,AA,AP
+
+[State 1]
+type = nothitby
+trigger1 = var(5)=1500
+trigger1 = animelem=5,<0
+value = SCA
+
+;サイコソード！
+[State 1,voice]
+type = playsnd
+trigger1 = animelem=1,=1
+value = s3,16
+channel = 0
+
+[state 1]
+type = playsnd
+trigger1 = animelem=5
+value = s2,9
+
+[state 1]
+type = statetypeset
+trigger1 = animelem=6,>=0
+value = A
+
+[state 1]
+type = posadd
+trigger1 = animelem=6
+y = -8
+
+[state 1]
+type = velset
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+x = 0
+y = 0
+
+[state 1]
+type = velset
+trigger1 = animelem=7,>=3
+x = 0
+
+[state 1]
+type = velset
+trigger1 = animelem=6
+x = 2
+y = -7
+
+[state 1]
+type = veladd
+trigger1 = animelem=7,>0
+y = .3
+
+;地上①
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=3||animelem=4
+trigger1 = var(4):=0||1;上昇ヒット制限
+attr = S,SA
+animtype = hard
+damage = ceil(19*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,ifelse((animelem=3),-37,-45)
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = high
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1)
+air.velocity = -0.5,-5.5
+airguard.velocity = -1,-2.75
+fall = 0
+air.fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1150
+
+;地上②
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=5
+attr = S,SA
+animtype = hard
+damage = ceil(19*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -15,-76
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1),-12
+air.velocity = -0.5,-12
+airguard.velocity = -2,-3.75
+fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1150
+
+;上昇
+[state 1]
+type = HitDef
+triggerall = var(4)<4
+triggerall = !var(8)
+trigger1 = animelem=6||animelem=7||animelem=8||animelem=9||animelem=10||animelem=11||animelem=12
+attr = A,SA
+animtype = hard
+damage = ceil(19*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -15,-77
+hitsound = s1,2
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -0.5*ifelse((var(18)=[1,2]),1.2,1),-12
+air.velocity = -0.5,-12
+airguard.velocity = -2,-3.75
+fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1151
+
+[State 1]
+type = varset
+trigger1 = Numtarget(1151)
+trigger1 = movehit=1
+var(4) = 1+var(4)
+
+;すり抜け防止
+[State 1]
+type = helper
+trigger1 = Numhelper(4649)=0
+trigger1 = animelem=1
+name="4649"
+id = 4649
+postype = P1
+pos = 0,0
+stateno = 4649
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+size.xscale = 1
+size.yscale = 1
+persistent = 0
+
+;AI用／追撃抑止
+[state 1]
+type = varset
+trigger1 = animelem=4,>0
+trigger1 = movehit
+var(7) = 1
+
+[state 1]
+type = changestate
+trigger1 = vel y >0 && pos y >=0
+value = 1170
+;============================================================================
+;サイコソード・着地
+[Statedef 1170]
+type = S
+movetype = I
+physics = S
+juggle = 0
+velset = 0,0
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=var(2)
+trigger1 = time=0
+value = var(2)
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[state 1]
+type = posset
+trigger1 = time=0
+y = 0
+
+;着地
+[state 1]
+type = playsnd
+trigger1 = animelem=1
+value = s40,0
+
+[state 00]
+type = changestate
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;=======================================================================================
+;弱・リフレクター
+[Statedef 1200]
+type = S
+movetype = A
+physics = S
+juggle = 15
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 0]
+type = TargetDrop
+trigger1 = time = 0
+trigger1 = Numtarget(1200)
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1200
+trigger1 = time=0
+value = 1200
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+;えぇーい！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem = 2
+value = s3,17
+channel = 0
+
+[State 1]
+type = null
+trigger1 = time=0
+trigger1 = var(2):=1273;リフレク防壁air
+trigger1 = var(4):=0||1;アーマー殺し対策
+
+;リフレクター
+[State 1]
+type = helper
+trigger1 = AnimElem = 2,=1
+name = "ref"
+ID = 1200
+pos = 0,0
+postype = p1
+stateno = 1270
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+;リフレク成功の終了アニメ
+[State 1]
+type = Explod
+trigger1 = Numhelper(1200)
+trigger1 = helper(1200),stateno=1070
+trigger1 = helper(1200),time=0
+Anim = 1275
+ID = 1275
+pos = 0,0
+postype = P1
+scale = 1,1
+bindtime = -1
+ownpal = 1
+sprpriority = 5
+ignorehitpause = 1
+
+;画面端ノックバック
+[State 1]
+type = velset
+trigger1 = Numhelper(1200)
+trigger1 = helper(1200),stateno=1275
+trigger1 = helper(1200),time=5
+trigger1 = Frontedgedist < 50
+trigger1 = Projcontact1200=1,<11
+x = -5
+
+[State 1]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+;=======================================================================================
+;強・リフレクター
+[Statedef 1250]
+type = S
+movetype = A
+physics = S
+juggle = 15
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 0]
+type = TargetDrop
+trigger1 = time = 0
+trigger1 = Numtarget(1250)
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1250
+trigger1 = time=0
+value = 1250
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+;えぇーい！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem = 2
+value = s3,17
+channel = 0
+
+[State 1]
+type = null
+trigger1 = time=0
+trigger1 = var(2):=1283;リフレク防壁air
+trigger1 = var(4):=0||1;アーマー殺し対策
+
+;追随ＥＦ
+[State 1]
+type = helper
+trigger1 = !Numhelper(3)
+trigger1 = time=0
+name = "EF"
+ID = 3
+pos = 0,0
+postype = p1
+stateno = 3
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+;リフレクター
+[State 1]
+type = helper
+trigger1 = AnimElem=5,=1
+name = "ref"
+ID = 1250
+pos = 0,0
+postype = p1
+stateno = 1270
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+;リフレク成功の終了アニメ
+[State 1]
+type = Explod
+trigger1 = Numhelper(1250)
+trigger1 = helper(1250),stateno=1070
+trigger1 = helper(1250),time=0
+Anim = 1285
+ID = 1285
+pos = 0,0
+postype = P1
+scale = 1,1
+bindtime = -1
+ownpal = 1
+sprpriority = 5
+ignorehitpause = 1
+
+[State 1]
+type = Explod
+trigger1 = !Numexplod(1289)
+trigger1 = animelem=5
+anim = 1289
+ID = 1289
+pos = 0,0
+postype = P1
+bindtime = -1
+removetime = -2
+sprpriority = 4
+ownpal = 1
+removeongethit = 1
+
+;画面端ノックバック
+[State 1]
+type = velset
+trigger1 = Numhelper(1200)
+trigger1 = helper(1200),stateno=1275
+trigger1 = helper(1200),time=5
+trigger1 = Frontedgedist < 50
+trigger1 = Projcontact1200=1,<11
+x = -5
+
+[State 1]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+;============================================================================
+;リフレク防壁部分本体
+[Statedef 1270]
+type = S
+movetype = A
+physics = N
+anim = 9999
+juggle = 15
+velset = 0,0
+ctrl = 0
+sprpriority = 1
+
+[State 1]
+type = bindtoroot
+trigger1 = 1
+pos = 0,0
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+[State 1]
+type = null
+triggerall = time=0
+trigger1 = var(2):=root,var(2);防壁air
+trigger1 = var(0):=ifelse(var(2)=1273,34,42);終了air
+
+[State 1]
+type = changeanim
+trigger1 = time=9
+value = var(2)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+[State 1]
+type = playsnd
+trigger1 = time=0
+value = s2,5
+
+[State 1]
+type = Explod
+trigger1 = time = 0
+Anim = ifelse(var(2)=1273,1270,1280)
+ID = 1270
+pos = 0,0
+postype = P1
+scale = 1,1
+shadow = 10,10,10
+ownpal = 1
+removetime = -1
+bindtime = -1
+sprpriority = 3
+
+[State 1]
+type = nothitby
+trigger1 = 1
+value = ,AA,AT
+ignorehitpause = 1
+
+;反射実行
+[State -3]
+type = hitoverride
+trigger1 = 1
+slot = 0
+stateno = 1070
+attr = SCA,AP
+time = 1
+ignorehitpause = 1
+
+;防壁部分／食らい枠しかないのでパラを設定する意味無し
+[State 1]
+type = HitDef
+trigger1 = time=0
+attr = S, SP
+hitflag = MAFP
+guardflag = MAF
+animtype = up
+damage = 0,0
+priority = 9
+pausetime = 0,15
+sparkno = -1
+guard.sparkno = -1
+sparkxy = 0,0
+hitsound = -1
+guardsound = -1
+ground.type = low
+ground.velocity = 0,0
+air.velocity = 0,0
+airguard.velocity = 0,0
+ground.slidetime = 0
+ground.hittime = 0
+guard.velocity = 0
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+fall = 1
+fall.recover = 0
+fall.recovertime = 100
+guard.ctrltime = 0
+persistent = 0
+
+[State 1]
+type = varset
+trigger1 = var(2)=1273
+trigger1 = time=1
+var(10) = 1
+
+[State 1]
+type = varset
+trigger1 = var(2)=1283
+trigger1 = time=1||time=20||time=32
+var(10) = ifelse(time=1||time=20,15,10)
+
+[State 1]
+type = Projectile
+trigger1 = var(2)=1273
+trigger1 = !var(4)
+trigger1 = !root,Numtarget(1200)
+trigger1 = time>=9
+trigger2 = var(2)=1283
+trigger2 = time=9||time=21||time=33
+attr = A, SP
+projID = 1200
+projanim = ifelse(var(2)=1273,1272,1282)
+projremanim = -1
+projhitanim = -1
+projremovetime = var(10)
+projshadow = 68,68,68
+projpriority = 1
+offset = 0,0
+velocity = 0,0
+ownpal = 1
+damage = ceil(ifelse(var(2)=1273,108,38)*root,fvar(22)),7
+priority = 4
+animtype = Hard
+hitflag = MAF
+guardflag = M
+pausetime = 0,12
+sparkno = -1;s62
+sparkxy = 20,-25
+guard.sparkno = -1;s72
+hitsound = -1;s1,5
+guardsound = -1;s121,0
+ground.type = Low
+ground.slidetime = 23
+ground.hittime  = 23
+ground.velocity = ifelse(var(2)=1273,-3,-6),-6
+air.velocity = ifelse(var(2)=1273,-3,-6),-6
+airguard.velocity = ifelse(var(2)=1273,-3,-6),-6
+air.animtype = Back
+fall = 1
+fall.recover = 0
+yaccel = .5
+air.juggle = ifelse(var(2)=1273,8,2)
+ID = ifelse(var(2)=1273,1200,1250)
+getpower = 42,42
+givepower = 21,21
+
+[State 1]
+type = varset
+trigger1 = root,ProjContactTime(1200)!=-1 && root,ProjContactTime(1200)<2
+var(4) = 1
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+;ヒット
+[State 1]
+type = playsnd
+trigger1 = root,Projhit1200=1,<2;(ヘルパー内は,<2が無いとprojhitを感知出来ない臭い
+trigger1 = enemynear,movetype=H
+value = s1,ifelse(anim=1273,2,4)
+;ガード
+[State 1]
+type = playsnd
+trigger1 = root,Projguarded1200=1,<2
+trigger1 = enemynear,movetype=H
+value = s121,0
+
+[State 1]
+type = Explod
+triggerall = enemynear,movetype=H
+trigger1 = root,Projhit1200=1,<2
+trigger1 = var(0):=62
+trigger2 = root,Projguarded1200=1,<2
+trigger2 = var(0):=71
+Anim = var(0)
+ID = var(0)
+pos = 60+(random%3)*10,-60-(random%3)*10
+postype = p1
+scale = 1,1
+ownpal = 1
+ontop = 1
+bindtime = 1
+sprpriority = 10
+ignorehitpause = 1
+
+[State -2,debug]
+type = DisplayToClipboard
+trigger1 = 1
+text = "(10)=%d (5)=%d"
+params = var(10),var(5)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+;通常消滅へ
+[State 1]
+type = ChangeState
+trigger1 = time>var(0) || root,movetype=H
+trigger2 = var(2)=1273&&time>9
+trigger2 = !root,NumprojID(1200)
+trigger3 = var(2)=1283&&time>32
+trigger3 = !root,NumprojID(1200)
+value = 1275
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;============================================================================
+;リフレク消滅・通常
+[Statedef 1275]
+type = A
+movetype = I
+physics = N
+anim = 9999
+velset = 0,0
+ctrl = 0
+sprpriority = 1
+
+[State 1]
+type = Explod
+trigger1 = time = 0
+Anim = ifelse(Ishelper(1250),1285,1275)
+ID = 1275
+pos = 0,0
+postype = P1
+scale = 1,1
+shadow = 10,10,10
+ownpal = 1
+removetime = -2
+bindtime = -1
+sprpriority = 3
+removeongethit = 1
+
+[State 1]
+type = bindtoroot
+trigger1 = root,movetype!=H
+pos = 0,0
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+[State 1]
+type = Removeexplod
+trigger1 = time=0
+ID = 1270
+
+[State 1]
+type = Destroyself
+trigger1 = !Numexplod(1275)
+;============================================================================
+;リフレク強制消滅
+[Statedef 1290]
+type = A
+movetype = A
+physics = N
+anim = 1290
+velset = 0,0
+ctrl = 0
+sprpriority = 1
+
+;対消滅用
+[State 1]
+type = HitDef
+trigger1 = root,NumprojID(1200)
+attr = S,SP
+hitflag = P
+;guardflag = MAF
+animtype = up
+damage = 0,0
+priority = 9999
+pausetime = 0,15
+sparkno = -1
+guard.sparkno = -1
+sparkxy = 0,0
+hitsound = -1
+guardsound = -1
+ground.type = low
+ground.velocity = 0,0
+air.velocity = 0,0
+airguard.velocity = 0,0
+ground.slidetime = 0
+ground.hittime = 0
+guard.velocity = 0
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+fall = 1
+fall.recover = 0
+fall.recovertime = 100
+guard.ctrltime = 0
+affectteam = F
+
+[State 1]
+type = Destroyself
+trigger1 = !root,NumprojID(1200)
+;============================================================================
+;Ｐアローa
+[Statedef 1300]
+type = A
+movetype = A
+physics = N
+juggle = 8
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 0]
+type = null
+triggerall = Time = 0
+trigger1 = var(2):=1370;着地air
+
+;着地ＥＦ向き制御
+[State 0]
+type = varset
+trigger1 = Prevstateno!=4050
+trigger1 = Time = 0
+var(4) = facing
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1300
+trigger1 = time=0
+value = 1300
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;フェニックスアロー！
+[State 1,voice]
+type = playsnd
+trigger1 = animelem=3
+value = s3,18
+channel = 0
+
+[state 1]
+type = playsnd
+trigger1 = animelem=3
+value = s2,3
+
+[State 1]
+type = Explod
+trigger1 = !Numexplod(1302)
+trigger1 = animelem=3
+anim = 1302
+ID = 1302
+pos = 0,0
+postype = P1
+bindtime = -1
+removetime = -1
+sprpriority = -3
+ownpal = 1
+removeongethit = 1
+
+[state 1]
+type = velset
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+x = 0
+y = 0
+
+[state 1]
+type = velset
+trigger1 = animelem=3
+x = 3
+y = 6
+
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=3||animelem=5||animelem=7||animelem=9||animelem=11
+attr = A,SA
+animtype = hard
+damage = ceil(50*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,-27+(random%3)*5
+hitsound = s1,3
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 20
+ground.hittime = 20
+ground.velocity = ifelse(pos Y<-30,-1,-10)*ifelse((var(18)=[1,2]),1.2,1)
+air.velocity = ifelse(pos Y<-30,-1,-10)*ifelse((var(18)=[1,2]),1.2,1),-9
+airguard.velocity = -2,-6.25
+fall = 0
+air.fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1300
+
+[state 1]
+type = changestate
+trigger1 = vel y >0 && pos y >=0
+value = 1370
+;============================================================================
+;Ｐアローb
+[Statedef 1350]
+type = A
+movetype = A
+physics = N
+juggle = 8
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 0]
+type = null
+triggerall = Time = 0
+trigger1 = var(2):=1375;着地air
+
+;着地ＥＦ向き制御
+[State 0]
+type = varset
+trigger1 = Prevstateno!=4050
+trigger1 = Time = 0
+var(4) = facing
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1350
+trigger1 = time=0
+value = 1350
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;フェニックスアロー！
+[State 1,voice]
+type = playsnd
+trigger1 = animelem=3
+value = s3,18
+channel = 0
+
+[state 1]
+type = playsnd
+trigger1 = animelem=3
+value = s2,3
+
+[State 1]
+type = Explod
+trigger1 = !Numexplod(1302)
+trigger1 = animelem=3
+anim = 1302
+ID = 1302
+pos = 0,0
+postype = P1
+bindtime = -1
+removetime = -1
+sprpriority = -3
+ownpal = 1
+removeongethit = 1
+
+[state 1]
+type = velset
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+x = 0
+y = 0
+
+[state 1]
+type = velset
+trigger1 = animelem=3
+x = 5
+y = 6
+
+[state 1]
+type = HitDef
+triggerall = !var(8)
+trigger1 = animelem=3||animelem=5||animelem=7||animelem=9||animelem=11
+attr = A,SA
+animtype = hard
+damage = ceil(63*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 2,2
+sparkno = s62
+sparkxy = -10,-27+(random%3)*5
+hitsound = s1,3
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 20
+ground.hittime = 20
+ground.velocity = ifelse(pos Y<-30,-1,-10)*ifelse((var(18)=[1,2]),1.2,1)
+air.velocity = ifelse(pos Y<-30,-1,-10)*ifelse((var(18)=[1,2]),1.2,1),-9
+airguard.velocity = -2,-6.25
+fall = 0
+air.fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+ID = 1350
+
+[state 1]
+type = changestate
+trigger1 = vel y >0 && pos y >=0
+value = 1370
+;============================================================================
+;Ｐアロー・着地
+[Statedef 1370]
+type = S
+movetype = A
+physics = S
+juggle = 0
+;velset = 0,0
+ctrl = 0
+
+[state 1]
+type = turn
+trigger1 = time=0
+trigger1 = P2Dist X<0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=var(2)
+trigger1 = time=0
+value = var(2)
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[state 1]
+type = posset
+trigger1 = time=0
+y = 0
+
+;画面端
+[state 1]
+type = velset
+trigger1 = time=0
+trigger1 = Numtarget(1300)>0||Numtarget(1350)>0
+trigger1 = Frontedgedist<50
+x = ifelse(anim=1370,-8,-4)
+
+[state 1]
+type = velset
+trigger1 = time=0
+y = 0
+
+;着地
+[state 1]
+type = playsnd
+trigger1 = animelem=1
+value = s40,0
+
+[State 1]
+type = Removeexplod
+trigger1 = animelem=1
+ID = 1302
+
+[State 1]
+type = Explod
+trigger1 = !Numexplod(1303)
+trigger1 = animelem=1
+anim = 1303
+ID = 1303
+pos = 0,0
+postype = P1
+bindtime = 1;-1
+sprpriority = -3
+ownpal = 1
+removeongethit = 1
+facing = ifelse(var(4)=1,1,-1)*facing
+
+[state 1]
+type = statetypeset
+trigger1 = time=0
+trigger1 = anim=1370
+movetype = I
+
+[state 1]
+type = HitDef
+triggerall = !var(8)
+triggerall = anim=1375
+trigger1 = animelem=4
+attr = S,SA
+animtype = hard
+damage = ceil(75*fvar(22)),7
+priority = 4,Hit
+hitflag = MAF
+guardflag = M
+pausetime = 11,12
+sparkno = s62
+sparkxy = -10,-67
+hitsound = s1,4
+guard.sparkno = s72
+guardsound = s121,0
+ground.type = Low
+ground.slidetime = 15
+ground.hittime = 15
+ground.velocity = -5*ifelse((var(18)=[1,2]),1.2,1),-6
+air.velocity = -5,-6
+airguard.velocity = -2,-6.25
+fall = 1
+air.fall = 1
+fall.recover = 0
+yaccel = .56
+getpower = 42,42
+givepower = 21,21
+ground.cornerpush.veloff = 0
+air.cornerpush.veloff = 0
+guard.cornerpush.veloff = 0
+
+[state 1]
+type = changestate
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;============================================================================
+;サイコシュートx
+[Statedef 1400]
+type = S
+movetype = A
+physics = S
+juggle = 5
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,63)
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1400
+trigger1 = time=0
+value = 1400
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;サイコシュー！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem=3
+value = s3,19
+channel = 0
+
+;サイコシュート
+[State 1]
+type = helper
+trigger1 = !Numhelper(1400)
+trigger1 = animelem=4,=8
+name = "tama"
+id = 1400
+pos = 35,-71
+postype = p1
+stateno = 1470
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = ChangeState
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;============================================================================
+;サイコシュートy
+[Statedef 1450]
+type = S
+movetype = A
+physics = S
+juggle = 5
+velset = 0,0
+poweradd = ifelse(Prevstateno=4050,0,63)
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=1450
+trigger1 = time=0
+value = 1450
+
+;テレポからの派生----------
+[state 1]
+type = nothitby
+trigger1 = var(15)=1500
+trigger1 = time=0
+value = SCA
+time = 5
+[State 0];アーマー時の出戻り消費解除
+type = varset
+triggerall = !Numhelper(1500)
+trigger1 = Time=1
+trigger2 = var(5)=1500
+var(5) = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;サイコシュー！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem=3
+value = s3,19
+channel = 0
+
+;サイコシュート
+[State 1]
+type = helper
+trigger1 = !Numhelper(1450)
+trigger1 = animelem=4,=12
+name = "tama"
+id = 1450
+pos = 35,-71
+postype = p1
+stateno = 1470
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = ChangeState
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;===========================================================================
+;サイコシュート本体
+[Statedef 1470]
+type = A
+movetype = I
+physics = N
+anim = 1470
+juggle = 8
+ctrl = 0
+sprpriority = 4
+
+[State 1]
+type = PlaySnd
+trigger1 = animelem=1
+value = s2,11
+
+[state 1]
+type = null
+triggerall = time=0
+triggerall = var(2):=1475;着弾air
+triggerall = var(56):=root,var(56)||1
+trigger1 = fvar(1):=ifelse((root,stateno=1400),2.8,4.5);速度
+trigger1 = var(30):=ifelse((root,stateno=1400),69,82);ダメージ
+
+[state 1]
+type = velset
+trigger1 = animelem=8
+x = fvar(1)
+
+[State 1]
+type = Projectile
+trigger1 = animelem=8
+attr = A, SP
+projID = 1400
+projanim = 1471
+projremanim = -1
+projhitanim = -1
+projshadow = 68,68,68
+projpriority = 1
+offset = 0,0
+velocity = fvar(1)
+ownpal = 1
+damage = ceil(var(30)*root,fvar(22)),7
+priority = 4
+animtype = Hard
+hitflag = MAF
+guardflag = M
+pausetime = 0,12
+sparkno = -1;s62
+sparkxy = 20,-25
+guard.sparkno = -1;s72
+hitsound = -1;s1,5
+guardsound = -1;s121,0
+ground.type = Low
+ground.slidetime = 23
+ground.hittime  = 23
+ground.velocity = -12
+guard.velocity = -12
+air.animtype = Back
+air.fall = 1
+fall.recover = 0
+air.velocity = -3,-3.6
+airguard.velocity = -3,-1.8
+down.velocity = -6,0
+yaccel = .5
+air.juggle = ifelse(root,var(3),20,8)
+ID = 1400
+getpower = 143,143
+givepower = 21,21
+
+[State 1]
+type = ChangeState
+trigger1 = animelem=8,>0
+trigger1 = root,NumProjid(1400)!
+value = 1075
+;============================================================================
+;弱・地上テレポ
+;※アーマー時は初期位置に戻り、移動が発生／継続しない
+[Statedef 1500]
+type = S
+movetype = I
+physics = N
+juggle = 0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 1];原作サイコボールのガー不バグ
+type = AssertSpecial
+trigger1 = !Teammode = simul
+trigger1 = NumProjid(1000)
+flag = unguardable
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+value = 1500
+
+;-----アーマー後-----
+[State 1];被弾の4050でもchangeanimしてる
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1520
+trigger1 = animelem=8,<0
+value = 1520
+elem = 8
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1500
+trigger1 = animelem=7,<0
+value = 1520
+elem = animelemno(0)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = statetypeset
+triggerall = Prevstateno=4050
+trigger1 = time=0
+physics = S
+
+[state 1]
+type = null
+triggerall = time=0
+trigger1 = var(9):=1501;始動体air
+trigger1 = var(26):=1570;終了air
+
+;出戻り被ダメ期間
+[State 1]
+type = varset
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=7
+var(5) = 1500
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;テレポート！
+[State 1,voice]
+type = PlaySnd
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=3
+value = s3,20
+channel = 0
+
+[state 1]
+type = AfterImage
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=7
+time = 10
+length = 8
+;palcolor = 256
+;palinvertall = 0
+palbright = 10,10,10
+palcontrast = 256,256,256
+;palpostbright = 164,164,164
+;paladd = 0,0,0
+;palmul = 0,0,0
+timegap = 2
+framegap = 2
+trans = none;add
+
+;始動体
+;※無敵だし、playerでも良いっちゃ良いんだが、
+;常時監視ステコンの暴走封じで、!Ishelperが必須になる。
+[State 1]
+type = helper
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = !Numhelper(1500)
+trigger1 = animelem=5
+name = "tama"
+id = 1500
+pos = 0,0
+postype = p1
+stateno = 1501
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = time=0
+x = 0
+y = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=7,>=0
+x = 10
+
+[state 1]
+type = playerpush
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=7,>=0
+value = 0
+
+[state 1];始動体座標
+type = null
+triggerall = Numhelper(1500)
+trigger1 = var(21):=floor((helper(1500),pos X)) ||1
+trigger1 = var(22):=floor((helper(1500),pos Y)) ||1
+
+[State 1];アーマー被弾前
+type = ChangeState
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+triggerall = animelem=8,>=0
+trigger1 = time>26
+value = 1570
+ctrl = 0
+
+[State 1];アーマー被弾後
+type = ChangeState
+triggerall = Prevstateno=4050
+triggerall = anim=1520
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+
+;============================================================================
+;強・地上テレポ
+;※アーマー時は初期位置に戻り、移動が発生／継続しない
+[Statedef 1550]
+type = S
+movetype = I
+physics = N
+juggle = 0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 1];原作サイコボールのガー不バグ
+type = AssertSpecial
+trigger1 = !Teammode = simul
+trigger1 = NumProjid(1000)
+flag = unguardable
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+value = 1500
+
+;-----アーマー後-----
+[State 1];被弾の4050でもchangeanimしてる
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1520
+trigger1 = animelem=8,<0
+value = 1520
+elem = 8
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1500
+trigger1 = animelem=7,<0
+value = 1520
+elem = animelemno(0)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = statetypeset
+triggerall = Prevstateno=4050
+trigger1 = time=0
+physics = S
+
+[state 1]
+type = null
+trigger1 = time=0
+trigger1 = var(9):=1551;始動体air
+trigger1 = var(26):=1570;終了air
+
+[State 1]
+type = null
+triggerall = Prevstateno!=4050
+trigger1 = anim=1500
+trigger1 = animelem=7
+trigger1 = var(5):=1500;出戻り被ダメ期間
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;テレポート！
+[State 1,voice]
+type = PlaySnd
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = animelem=3
+value = s3,20
+channel = 0
+
+[state 1]
+type = AfterImage
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = animelem=7
+time = 20
+length = 8
+;palcolor = 256
+;palinvertall = 0
+palbright = 10,10,10
+palcontrast = 256,256,256
+;palpostbright = 164,164,164
+;paladd = 0,0,0
+;palmul = 0,0,0
+timegap = 2
+framegap = 2
+trans = none;add
+
+;始動体
+[State 1]
+type = helper
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = !Numhelper(1500)
+trigger1 = animelem=5
+name = "tama"
+id = 1500
+pos = 0,0
+postype = p1
+stateno = 1501
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = time=0
+x = 0
+y = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = animelem=7,>=0
+x = 10
+
+[state 1]
+type = playerpush
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+trigger1 = animelem=7,>=0
+value = 0
+
+[state 1];始動体座標
+type = null
+triggerall = Numhelper(1500)
+trigger1 = var(21):=floor((helper(1500),pos X)) ||1
+trigger1 = var(22):=floor((helper(1500),pos Y)) ||1
+
+[State 1]
+type = ChangeState
+triggerall = Prevstateno!=4050
+triggerall = anim=1500
+triggerall = animelem=8,>=0
+trigger1 = time>36
+value = 1570
+ctrl = 0
+
+[State 1];アーマー被弾後
+type = ChangeState
+triggerall = Prevstateno=4050
+triggerall = anim=1520
+trigger1 = animtime=0
+value = 0
+ctrl = 1
+;============================================================================
+;弱・空中テレポ・真横
+;※アーマー時は初期位置に戻り、移動が発生／継続しない
+[Statedef 1510]
+type = A
+movetype = I
+physics = N
+juggle = 0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 1];原作サイコボールのガー不バグ
+type = AssertSpecial
+trigger1 = !Teammode = simul
+trigger1 = NumProjid(1000)
+flag = unguardable
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+value = 1505
+
+;-----アーマー後-----
+[State 1];被弾の4050でもchangeanimしてる
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1521
+trigger1 = animelem=8,<0
+value = 1521
+elem = 8
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1505
+trigger1 = animelem=7,<0
+value = 1521
+elem = animelemno(0)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = statetypeset
+triggerall = Prevstateno=4050
+trigger1 = time=0
+physics = A
+
+[state 1]
+type = null
+trigger1 = time=0
+trigger1 = var(9):=1501;始動体air
+trigger1 = var(26):=1510;終了air
+
+[State 1]
+type = null
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7
+trigger1 = var(5):=1500;出戻り被ダメ期間
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;テレポート！
+[State 1,voice]
+type = PlaySnd
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=3
+value = s3,20
+channel = 0
+
+[state 1]
+type = AfterImage
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7
+time = 20
+length = 8
+;palcolor = 256
+;palinvertall = 0
+palbright = 10,10,10
+palcontrast = 256,256,256
+;palpostbright = 164,164,164
+;paladd = 0,0,0
+;palmul = 0,0,0
+timegap = 2
+framegap = 2
+trans = none;add
+
+;始動体
+[State 1]
+type = helper
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = !Numhelper(1500)
+trigger1 = animelem=5
+name = "tama"
+id = 1500
+pos = 0,0
+postype = p1
+stateno = 1501
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = velset
+trigger1 = time=0
+x = 0
+y = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7,>=0
+x = 12
+
+[state 1]
+type = playerpush
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7,>=0
+value = 0
+
+[state 1];始動体座標
+type = null
+triggerall = Numhelper(1500)
+trigger1 = var(21):=floor((helper(1500),pos X)) ||1
+trigger1 = var(22):=floor((helper(1500),pos Y)) ||1
+
+[State 1]
+type = ChangeState
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=8,>=0
+trigger1 = time>31
+value = 1570
+
+[State 1];アーマー被弾後
+type = ChangeState
+triggerall = Prevstateno=4050
+triggerall = anim=1521
+trigger1 = pos Y>=0 &&vel Y>0
+value = 52
+ctrl = 0
+;============================================================================
+;強・空中テレポ・下降
+;※アーマー時は初期位置に戻り、移動が発生／継続しない
+[Statedef 1560]
+type = A
+movetype = I
+physics = N
+juggle = 0
+poweradd = ifelse(Prevstateno=4050,0,84)
+ctrl = 0
+
+[State 1];原作サイコボールのガー不バグ
+type = AssertSpecial
+trigger1 = !Teammode = simul
+trigger1 = NumProjid(1000)
+flag = unguardable
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = Prevstateno!=4050
+trigger1 = time=0
+value = 1505
+
+;-----アーマー後-----
+[State 1];被弾の4050でもchangeanimしてる
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1521
+trigger1 = animelem=8,<0
+value = 1521
+elem = 8
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = changeanim
+triggerall = Prevstateno=4050
+trigger1 = anim=1505
+trigger1 = animelem=7,<0
+value = 1521
+elem = animelemno(0)
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State 1]
+type = statetypeset
+triggerall = Prevstateno=4050
+trigger1 = time=0
+physics = A
+
+[state 1]
+type = null
+trigger1 = time=0
+trigger1 = var(9):=1551;始動体air
+trigger1 = var(26):=1560;終了air
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;テレポート！
+[State 1,voice]
+type = PlaySnd
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=3
+value = s3,20
+channel = 0
+
+[state 1]
+type = AfterImage
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7
+time = 20
+length = 8
+;palcolor = 256
+;palinvertall = 0
+palbright = 10,10,10
+palcontrast = 256,256,256
+;palpostbright = 164,164,164
+;paladd = 0,0,0
+;palmul = 0,0,0
+timegap = 2
+framegap = 2
+trans = none;add
+
+;始動体
+[State 1]
+type = helper
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = !Numhelper(1500)
+trigger1 = animelem=5
+name = "tama"
+id = 1500
+pos = 0,0
+postype = p1
+stateno = 1501
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[State 1]
+type = null
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7
+trigger1 = var(5):=1500;出戻り被ダメ期間
+
+[State 1]
+type = velset
+trigger1 = time=0
+x = 0
+y = 0
+
+[State 1]
+type = velset
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7,>=0
+x = 12
+y = 8
+
+[state 1]
+type = playerpush
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = animelem=7,>=0
+value = 0
+
+[state 1];始動体座標
+type = null
+triggerall = Numhelper(1500)
+trigger1 = var(21):=floor((helper(1500),pos X)) ||1
+trigger1 = var(22):=floor((helper(1500),pos Y)) ||1
+
+[State 1]
+type = ChangeState
+triggerall = Prevstateno!=4050
+triggerall = anim=1505
+trigger1 = vel Y>0 &&pos Y>=0
+value = 1570
+
+[State 1];アーマー被弾後
+type = ChangeState
+triggerall = Prevstateno=4050
+triggerall = anim=1521
+trigger1 = pos Y>=0 &&vel Y>0
+value = 52
+ctrl = 0
+;============================================================================
+;全テレポ・終了
+[Statedef 1570]
+type = U
+movetype = I
+physics = U
+juggle = 0
+velset = 0,0
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=var(26)
+trigger1 = time=0
+value = var(26)
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[state 1];解除
+type = varset
+trigger1 = time=0
+var(5) = 0
+
+[state 1]
+type = posset
+trigger1 = anim!=1510;空中テレポ・弱除く
+trigger1 = time=0
+y = 0
+
+[state 1]
+type = veladd
+trigger1 = anim=1510;空中テレポ・弱
+trigger1 = time>0
+y = .4
+
+;着地
+[state 1]
+type = playsnd
+trigger1 = anim=1675;空中テレポ・強
+trigger1 = animelem=1
+value = s40,0
+
+[state 00]
+type = changestate
+;-----空中テレポ・弱除く-----
+trigger1 = anim!=1510
+trigger1 = animtime=0
+;-----空中テレポ・弱-----
+trigger2 = anim=1510
+trigger2 = vel Y>0&&pos Y>=0
+value = ifelse(anim=1510,52,0)
+ctrl = 1
+;============================================================================
+;テレポヘルパー・始動体①
+[Statedef 1501]
+type = S
+movetype = I
+physics = S
+anim = root,var(9)
+juggle = 0
+velset = 0,0
+ctrl = 0
+
+[State 1]
+type = screenbound
+trigger1 = 1
+value = 1
+movecamera = 1
+
+[state 1]
+type = playerpush
+trigger1 = anim=1501&&animelem=8,<0
+trigger2 = anim=1551&&animelem=13,<0
+value = 1
+
+[state 1]
+type = playerpush
+trigger1 = anim=1501&&animelem=8,>=0
+trigger2 = anim=1551&&animelem=13,>=0
+value = 0
+
+[state 1]
+type = nothitby
+trigger1 = 1
+value = SCA
+
+;始動体（只の終了残像
+[State 1]
+type = helper
+trigger1 = animelem=4
+trigger2 = anim=1501&&animelem=7
+trigger3 = anim=1551&&animelem=10
+name = "tama"
+id = 1502
+pos = 0,0
+postype = p1
+stateno = 1502
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[State 1]
+type = PlaySnd
+trigger1 = time=0
+value = s2,6
+
+[State 1]
+type = destroyself
+trigger1 = animtime=0 || root,movetype=H
+trigger2 = root,stateno=1570
+trigger3 = root,movetype=A && root,time>=15
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;============================================================================
+;テレポヘルパー・始動体②
+[Statedef 1502]
+type = S
+movetype = I
+physics = S
+anim = 1502
+juggle = 0
+velset = 0,0
+ctrl = 0
+
+[state 1]
+type = nothitby
+trigger1 = 1
+value = SCA
+
+[state 1]
+type = playerpush
+trigger1 = 1
+value = 0
+
+[State 1]
+type = screenbound
+trigger1 = 1
+value = 1
+movecamera = 1
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+[State 1]
+type = destroyself
+trigger1 = animtime=0 || root,movetype=H
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+;============================================================================
+;ストライカー呼び出し
+[Statedef 2050]
+type = S
+movetype = A
+physics = S
+juggle = 5
+velset = 0,0
+ctrl = 0
+
+;----------アーマー時以外
+[State 1]
+type = changeanim
+trigger1 = anim!=2050
+trigger1 = time=0
+value = 2050
+
+[state 1]
+type = width
+trigger1 = 1
+edge = 20,0
+
+;お願い！
+[State 1,voice]
+type = PlaySnd
+trigger1 = animelem=2
+value = s3,9
+channel = 0
+
+[State 1]
+type = ChangeState
+trigger1 = animtime=0
+value = 0
+ctrl = 1

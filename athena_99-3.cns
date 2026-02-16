@@ -1,0 +1,889 @@
+;removeongethit = 1
+;persistent = 0
+;ignorehitpause = 1
+;supermovetime = 999
+;pausemovetime = 999
+;===========================================================================
+[Statedef -3]
+;〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓
+;ＡＩＬＶ変更
+[State -3,AI-on]
+type = varset
+triggerall = roundstate<=2&&alive&&var(59)=0
+triggerall = Numhelper(8888)
+trigger1 = command="AI00"||command="AI01"||command="AI02"||command="AI03"||command="AI04"||command="AI05"||command="AI06"||command="AI07"||command="AI08"||command="AI09"
+trigger2 = command="AI10"||command="AI11"||command="AI12"||command="AI13"||command="AI14"||command="AI15"||command="AI16"||command="AI17"||command="AI18"||command="AI19"
+trigger3 = command="AI20"||command="AI21"||command="AI22"||command="AI23"||command="AI24"||command="AI25"||command="AI26"||command="AI27"||command="AI28"||command="AI29"||command="AI30"
+trigger4 = command="x" && command="z" && command="c"
+trigger5 = Numhelper(10000)>0   ;WIN用
+trigger5 = helper(10000),var(59)
+trigger6 = Numhelper(10001)>0   ;新用
+trigger6 = helper(10001),var(59)
+var(59) = ifelse(var(59)<0,var(59),helper(8888),var(0))
+ignorehitpause = 1
+;===========================================================================
+;AI値記憶
+[State -3,AI-off]
+type = VarSet
+trigger1 = var(59)>0 && (!alive||roundstate!=2)
+trigger2 = var(59)<0 && roundstate=2 && alive
+var(59) = var(59)*-1
+;--------------------------------------------------------------------
+;AILV調整
+[State -3,AILV]
+type = VarSet
+trigger1 = var(59)>0
+fvar(1) = var(59)*0.125
+;===========================================================================
+;コンフィグヘルパー
+[State -3,config]
+type = helper
+triggerall = !Numhelper(8888)
+trigger1 = roundstate<=2
+Name="config"
+ID = 8888
+pos = 0,500
+postype = back
+stateno = 8888
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+supermovetime = 999999999999999
+pausemovetime = 999999999999999
+
+;設定引継ぎ
+[State 1]
+type = null
+triggerall = Numhelper(8888)
+triggerall = roundstate<2
+trigger1 = var(58):=helper(8888),var(32)||1;空中ガード制限/他
+;↑hitdef等々に＜var(58)の分岐条件＞が在るので、修正が超面倒だから引き継ぐ
+;===========================================================================
+;アーマー貫通技　※他キャラはかったるいにも程があるから、やってられん
+[State -2];超裂破弾＆サンダーブレイクは、超アーマー殺し
+type = varset
+var(35) = (P2stateno)
+triggerall = !Teammode = simul && !enemy,Teammode = simul
+triggerall = enemy,Authorname="sekirei"
+trigger1 = P2name="s_crea-f" && (P2stateno=3000||P2stateno=3005||P2stateno=3050||P2stateno=3400||enemy,NumprojID(3100)||enemy,NumprojID(3150)||enemy,NumprojID(4205))    ;乱舞超必、アークカノン、ティアノルド
+trigger2 = P2name="s_sayia-f" && (enemy,NumprojID(3000)||enemy,NumprojID(3100)||enemy,NumprojID(3405)||P2stateno=3300||P2stateno=3301)                                   ;エデンズゲート、ファルバラス、ＴＦＢ、アーカティック
+trigger3 = P2name="s_cless-f" && (P2stateno=3000||P2stateno=3005||P2stateno=3200||enemy,NumprojID(3308)||enemy,NumprojID(3309)||enemy,NumprojID(3310)||enemy,NumprojID(3050))    ;乱舞超必・テラティアー、轟招雷
+trigger4 = P2name="s_kyle-c" && 0
+trigger5 = P2name="Kyoko_typeA" && (P2stateno=3500||P2stateno=4000)                                 ;B-Kyoko、弖拿鎚
+trigger6 = P2name="Kyoko_typeK" && (P2stateno=3850||P2stateno=4000)                                 ;八重雅姫、弖拿鎚
+trigger7 = P2name="Kyoko_typeC" && (P2stateno=3300||P2stateno=3800)                                 ;都牟刈、嶽御火鎚
+trigger8 = P2name="Yagami_if" && (P2stateno=3000||P2stateno=3050||P2stateno=3200||P2stateno=3900)   ;八稚女、三神器之弐、析爪櫛
+trigger9 = P2name="Ryo945"||P2name="Robert945"||P2name="Takuma945"||P2name="Yuri945"
+trigger9 = P2stateno=1400||P2stateno=1450||P2stateno=3000                                           ;暫烈拳、幻影脚、百列ビンタ、乱舞超必
+trigger10 = P2name="Andy_FF3RB" && (P2stateno=3000||P2stateno=3050||P2stateno=3150||P2stateno=3155) ;超裂破弾
+trigger11 = P2name="Geese_FF3RB" && (P2stateno=3100||P2stateno=3200)                                ;サンダーブレイク、デッドリーレイブ
+trigger12 = P2name="Yagami945" && (P2stateno=3000)                                                  ;八稚女
+trigger13 = P2name="King945" && (P2stateno=1100||P2stateno=1150||P2stateno=3000)                    ;トラップショット、イリュージョンダンス
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+;システム系
+;■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+;===========================================================================
+;スタン／ガークラ管理
+;ゲージ
+[State -2,stun-crush-helper]
+type = helper
+triggerall = !Ishelper
+triggerall = roundstate = 2 && alive
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(7)
+trigger1 = Numhelper(7700)=0
+Name="STUN-CRUSH"
+id = 7700
+pos = 0,100
+postype = back
+stateno = 7700
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+persistent = 0
+size.ground.back = 0
+size.ground.front = 0
+size.air.back = 0
+size.air.front = 0
+size.height = 0
+size.proj.doscale = 0
+size.head.pos = 0
+size.mid.pos = 0
+supermovetime = 999999999999999
+pausemovetime = 999999999999999
+;===========================================================================
+;強制スタン／ガークラ管理
+;ゲージ
+[State -2,7701]
+type = helper
+triggerall = !Ishelper
+triggerall = roundstate = 2 && alive
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(17)
+trigger1 = Numhelper(7701)=0
+Name="itemae"
+id = 7701
+pos = 0,100
+postype = back
+stateno = 7701
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+persistent = 0
+size.ground.back = 0
+size.ground.front = 0
+size.air.back = 0
+size.air.front = 0
+size.height = 0
+size.proj.doscale = 0
+size.head.pos = 0
+size.mid.pos = 0
+supermovetime = 999999999999999
+pausemovetime = 999999999999999
+;===========================================================================
+;アーマー発生へ
+[State -2]
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+;triggerall = P2stateno!=var(35);アーマー殺しを調べるには邪魔
+triggerall = helper(8888),var(25)=0&&statetype!=A||helper(8888),var(25)=1
+triggerall = stateno!=5310&&stateno!=5315&&stateno!=5320;自己スタン中
+triggerall = stateno!=[120,155]
+triggerall = var(18)=2
+trigger1 = movetype=A||movetype=I
+trigger2 = stateno=4050 && !HitCount  ;4050中が判定アニメだった際、4050維持の連続ヒットを防ぐ
+slot = 7;←←←【優先度：高 0 ～7 低】【ブロッキングと同時共存】させるには、slot数をブロッキングより大きくして、【優先度を下げる】
+stateno = 4050
+attr = SCA, AA, AP
+time = 1
+;ignorehitpause = 1;付けるとヒドイ事になる
+
+;ノックバック※技によってはスンゲー離れる。
+[State -2]
+type = velset
+trigger1 = statetype=S||statetype=C
+trigger1 = Prevstateno=4050
+trigger1 = time=1
+x = ifelse(gethitvar(xvel)*facing<0,gethitvar(xvel)*facing,-6)
+
+[State -2]
+type = veladd
+trigger1 = statetype=S||statetype=C
+trigger1 = Prevstateno=4050
+trigger1 = time=[1,5]
+x = .83
+;===========================================================================
+;ブロッキング発生へ
+[State -2];----------上段----------
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+triggerall = helper(8888),var(35)
+triggerall = statetype=S
+triggerall = movetype=I
+triggerall = ctrl || (stateno=4150||stateno=4160)&&animelem=2,>=0
+trigger1 = helper(8888),var(37)>0
+slot = 0;←←←【優先度：高 0 ～7 低】【アーマーと同時共存】させるには、slot数をアーマーより小さくして、【優先度を上げる】
+stateno = 4150
+attr = SA, AA
+time = 1
+ignorehitpause = 1;※付けても付けなくても、一瞬のmovetype=Hは変わらない
+[State -2];----------下段----------
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+triggerall = helper(8888),var(35)
+triggerall = statetype=S||statetype=C
+triggerall = movetype=I
+triggerall = ctrl || (stateno=4150||stateno=4160)&&animelem=2,>=0
+trigger1 = helper(8888),var(37)<0
+slot = 1
+stateno = 4160
+attr = C, AA
+time = 1
+ignorehitpause = 1;※付けても付けなくても、一瞬のmovetype=Hは変わらない
+[State -2];----------空中----------
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+triggerall = helper(8888),var(35)
+triggerall = statetype=A
+triggerall = movetype=I
+triggerall = ctrl || (stateno=4170)&&animelem=2,>=0
+trigger1 = helper(8888),var(37)>0
+slot = 2
+stateno = 4170
+attr = SCA, AA
+time = 1
+ignorehitpause = 1;※付けても付けなくても、一瞬のmovetype=Hは変わらない
+[State -2];----------飛び道具・地上----------
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+triggerall = helper(8888),var(35)
+triggerall = movetype=I
+triggerall = statetype=S
+triggerall = ctrl || (stateno=4150||stateno=4160)&&animelem=2,>=0
+trigger1 = helper(8888),var(37)>0
+slot = 3
+stateno = 4150
+attr = SCA, AP
+time = 1
+ignorehitpause = 1;※付けても付けなくても、一瞬のmovetype=Hは変わらない
+[State -2];----------飛び道具・空中----------
+type = hitoverride
+triggerall = roundstate = 2 && !ishelper && alive
+triggerall = helper(8888),var(35)
+triggerall = movetype=I
+triggerall = statetype=A
+triggerall = ctrl || (stateno=4170)&&animelem=2,>=0
+trigger1 = helper(8888),var(37)>0
+slot = 4
+stateno = 4170
+attr = SCA, AP
+time = 1
+ignorehitpause = 1;※付けても付けなくても、一瞬のmovetype=Hは変わらない
+;===========================================================================
+;特殊エフェクト（アーマー２種・ブロ・JDF）
+;P1-------------
+[State 1]
+type = Explod
+triggerall = roundstate=2
+triggerall = Numhelper(8888)
+trigger1 = time=2 && stateno=2010&&helper(8888),var(58)=0         ;アーマーhitoverride
+trigger1 = var(3):=4010
+trigger2 = time=2 && stateno=2010&&helper(8888),var(58)=1         ;アーマーhelper
+trigger2 = var(3):=4011
+trigger3 = time=0 && (stateno=4150||stateno=4160||stateno=4170)   ;ブロ
+trigger3 = var(3):=4012
+trigger4 = helper(8888),var(38)>0
+trigger4 = time=0 && (stateno=150||stateno=152||stateno=154)      ;JDF
+trigger4 = var(3):=4013
+Anim = var(3)
+ID = 4010
+pos = ifelse(Teamside=1,80,240),70
+postype = left
+scale = .75,.75
+ownpal = 1
+bindtime = -1
+removetime = -2
+facing = 1
+ontop = 1
+sprpriority = 10
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;ターン初登場時イントロヘ
+[State -3,190]
+type = ChangeState
+triggerall = roundstate=0&&roundsexisted=0
+triggerall = stateno=5900
+trigger1 = time=0
+value = 190
+;===========================================================================
+;ガークラ耐久値
+[State -2,fv16]
+type = varadd
+triggerall = !Ishelper
+triggerall = roundstate = 2
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(7)
+triggerall = fvar(16) =[0,100]
+triggerall = !enemy,hitdefattr=SCA,HA,HP,AT
+triggerall = time = 0
+trigger1 = stateno=150||stateno=152||stateno=154
+fvar(16) = (-2-(gethitvar(hitshaketime)=[10,19])*2-(gethitvar(hitshaketime)=[20,29])*3-(gethitvar(hitshaketime)>=30)*4)*ifelse((!enemy,hitdefattr=SCA,AA,AP,AT),.5,1)*1.2
+
+;振動時間
+;敵指定のガードポーズタイム分揺らす
+[State -2,fv17]
+type = varset
+triggerall = !Ishelper
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(7)
+trigger1 = stateno=150||stateno=152||stateno=154
+trigger1 = time = 0
+fvar(17) = gethitvar(hitshaketime)
+ignorehitpause = 1
+
+;ガークラへ
+[State -2]
+type = changestate
+triggerall = !Ishelper
+triggerall = roundstate = 2 && alive
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(7)
+trigger1 = fvar(16)<(2+(gethitvar(hitshaketime)=[10,19])*2+(gethitvar(hitshaketime)=[20,29])*3+(gethitvar(hitshaketime)>=30)*4)*ifelse((!enemy,hitdefattr=SCA,AA,AP,AT),.5,1)||fvar(16)<0
+trigger1 = stateno=150||stateno=152||stateno=154
+trigger1 = time = [0,1]
+value = 5910+(stateno=154)*5
+ctrl = 0
+;===========================================================================
+;スタンへ
+[State -2]
+type = changestate
+triggerall = !Ishelper
+triggerall = roundstate = 2 && alive
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(7)
+triggerall = fvar(14) < 2
+trigger1 = stateno=5000||stateno=5010||stateno=5020||stateno=5070
+trigger1 = gethitvar(hitshaketime)=0
+trigger2 = stateno=5120&&animtime=0
+value = ifelse(stateno=5120&&animtime=0,5320,5310)
+ctrl = 0
+;===========================================================================
+;削りKO
+[State 1]
+type = null;ChangeState
+triggerall = !Ishelper
+trigger1 = stateno=5000
+trigger1 = gethitvar(damage)>=life
+trigger1 = statetype = S || statetype = C
+trigger1 = Prevstateno=120 || Prevstateno=140||(Prevstateno=[130,131])||(Prevstateno=[150,152])
+value = 5950
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;先行入力／-2では、ステ奪われ中に何もせずとも入る事がある
+;成功していればdef0のtime=1で技が最速で発生。
+;fvar(19)は各ステートNO
+:現在地上技のみ
+[state -2,fv19]
+type = null
+triggerall = !Ishelper
+triggerall = var(59)=0&&!Ishelper&&roundstate=2&&alive
+triggerall = statetype!=A
+triggerall = !ctrl
+triggerall = !helper(8888),var(28);技封印技中は機能しない
+triggerall = animtime >= -helper(8888),var(30)
+;ＬＶ２-ＳＣＢ
+trigger1 = var(18)=0
+trigger1 = power>=ifelse(var(6)=400,2000,3000) && (command="6321463214xy"||command="6321463214c")
+trigger1 = fvar(19):= 3050
+;ＬＶ１-ＳＣＢ
+trigger2 = power>=ifelse(var(18)=1,0,1000) && (command="6321463214x"||command="6321463214y")
+trigger2 = fvar(19):= 3000
+;サイコシュート
+trigger3 = command="41236x"||command="41236y"
+trigger3 = !NumprojID(1000)&&!NumprojID(1400)
+trigger3 = fvar(19):= 1400+(command="41236y")*50
+;リフレクター
+trigger4 = !NumprojID(1200)
+trigger4 = command="214a"||command="214b"
+trigger4 = fvar(19):= 1200+(command="214b")*50
+;サイコソード
+trigger5 = command="623x"||command="623y"
+trigger5 = fvar(19):= 1100+(command="623y")*50
+;サイコボール
+trigger6 = !NumprojID(1000)&&!NumprojID(1400)
+trigger6 = command="214x"||command="214y"
+trigger6 = fvar(19):= 1000+(command="214y")*50
+;テレポート
+trigger7 = command="236a"||command="236b"
+trigger7 = fvar(19):= 1500+(command="236b")*50
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;SC/DC赤点滅
+[state -2]
+type = PalFX
+triggerall = !Ishelper
+triggerall = time = 1 || time = 5
+trigger1 = prevstateno=[1000,1999]
+trigger1 = stateno=3000||stateno=3050
+time = 2
+add = 240,40,40
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;カウンター期間解除
+[State 1]
+type = statetypeset
+triggerall = movetype = A
+
+trigger1 = animelem=3 &&( (stateno=[230,235])||stateno=400||stateno=430 )
+trigger2 = animelem=4 &&( (stateno=[205,215])||stateno=410||stateno=440||(stateno=[600,605])||(stateno=[630,635]) )
+trigger3 = animelem=5 &&( stateno=200||(stateno=[240,245])||(stateno=[610,615])||(stateno=[640,685]) )
+trigger4 = 0 ;animelem=6 &&()
+trigger5 = animelem=7 &&( (stateno=[1000,1050]) )
+trigger6 = 0 ;animelem=8 &&()
+trigger7 = 0 ;animelem=9 &&()
+trigger8 = 0 ;animelem=10 &&()
+trigger9 = 0 ;animelem=11 &&()
+trigger10 = animelem=12 &&( (stateno=[1100,1150])||stateno=1400 )
+trigger11 = animelem=13 &&( stateno=1450 )
+trigger12 = 0 ;animelem=14 &&()
+trigger13 = 0 ;animelem=15 &&()
+trigger14 = animelem=19 &&( stateno=1200 )
+trigger15 = animelem=22 &&( stateno=1250 )
+trigger16 = 0 ;animelem=26 &&()
+trigger17 = 0 ;animelem=53 &&()
+
+movetype = I
+;===========================================================================
+;追撃抑止
+[State -2,v36]
+type = Varset
+triggerall = !Ishelper
+triggerall = roundstate = 2
+triggerall = var(59)=[5,10]
+trigger1 = var(37)!=-1 && enemynear(var(47)),stateno=var(37)||enemynear(var(47)),stateno=[5200,5201]
+var(36) = 1
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+
+;追撃抑止/気絶持ち
+[State -2,v36]
+type = Varset
+triggerall = !Ishelper
+triggerall = roundstate = 2
+triggerall = var(59)=[5,10]
+triggerall = (enemynear(var(47)),stateno=[5310,5315]) || enemynear(var(47)),fvar(14)<0 && (enemynear(var(47)),stateno=[5000,5020])
+triggerall = enemynear(var(47)),selfanimexist(6358515)
+trigger1 = enemynear(var(47)),AuthorName="sekirei"
+
+var(36) = 2
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;追撃可能なダウン回避
+[State -3,fv29]
+type = varset
+triggerall = !Ishelper
+triggerall = var(59)=0 || (var(59)=[8,10])
+;-----オリ除く前転(vel式)-----
+trigger1 = !enemynear(var(47)),selfanimexist(1812236);オリキャラ判定
+trigger1 = enemynear(var(47)),authorname="sekirei" && enemynear(var(47)),stateno=var(37)
+trigger1 = enemynear(var(47)),var(44) && enemynear(var(47)),vel X > 0
+;-----京子の前転(posadd式)-----
+trigger2 = enemynear(var(47)),authorname="sekirei" && enemynear(var(47)),stateno=var(37)
+trigger2 = enemynear(var(47)),name="kyoko_typeA"||enemynear(var(47)),name="kyoko_typeK"||enemynear(var(47)),name="kyoko_typeC"
+trigger2 = enemynear(var(47)),var(44) && enemynear(var(47)),var(3)=0;前転中
+;-----自作改変パッチ適応＆改変ON状態-----
+trigger3 = enemynear(var(47)),authorname="jin" && enemynear(var(47)),stateno=var(37)
+trigger3 = enemynear(var(47)),selfanimexist(9363414);改変認識
+trigger3 = enemynear(var(47)),var(44) && enemynear(var(47)),vel X > 0
+fvar(29) = 1
+
+[State -3]
+type = varset
+trigger1 = enemynear(var(47)),stateno!=var(37)
+trigger2 = enemynear(var(47)),movetype=I && enemynear(var(47)),ctrl
+trigger3 = movetype=H || movehit=1
+fvar(29) = 0
+;===========================================================================
+;カウンター時のふっとばしコンボ可能
+[State -2]
+type = TargetDrop
+triggerall = !Ishelper
+trigger1 = Numtarget(2999)
+trigger1 = Prevstateno=3105
+trigger1 = movetype=H
+
+[State -2,v29]
+type = AssertSpecial
+triggerall = !Ishelper
+trigger1 = var(29)
+flag = nojugglecheck
+
+[State -2]
+type = varset
+triggerall = !Ishelper
+trigger1 = var(29)=1
+trigger1 = stateno!=280&&stateno!=680
+trigger1 = movehit=1
+trigger2 = enemynear(var(47)),statetype=L||enemynear(var(47)),movetype=I
+var(29) = 0
+;===========================================================================
+;追撃不能
+[State -2,v8]
+type = Varset
+triggerall = !Ishelper
+triggerall = roundstate = 2
+triggerall = !var(58)
+triggerall = fvar(15)=1&&!var(29)
+trigger1 = movehit=1
+trigger1 = stateno=[200,440]
+trigger1 = Numtarget
+trigger1 = target,statetype=A
+var(8) = 1
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;フライング対策
+[State -2]
+type = nothitby
+triggerall = !(enemy,authorname="EL"&&enemy,name="BRIDGET"&&enemy,stateno=192)
+trigger1 = roundstate = [0,1]
+trigger2 = Prevstateno = 5900 || (Prevstateno = [190,194])
+trigger2 = !ctrl && roundstate = 2 && stateno = 0
+value = SCA
+;===========================================================================
+;ダメージ換算
+[State -3,v56-on]
+type = varset
+triggerall = roundstate = 2
+trigger1 = Numtarget > 0
+var(56) = target,const(data.life)
+;===========================================================================
+;防御力チェック（無判定乱舞用
+;基本①掛け
+[State 1]
+type = varset
+trigger1 = Teammode = simul
+trigger1 = Numtarget = 0
+fvar(25) = 1
+
+;ロック時のみ掛け率変動
+[State 1]
+type = varset
+trigger1 = Numtarget > 0
+fvar(25) = (1000.0*100.0)/(target,const(data.life)*target,const(data.defence))
+;===========================================================================
+;トレモ判別
+[State -2,fv11]
+type = varset
+triggerall = var(59)=0
+triggerall = IsHomeTeam = 1 && Teamside = 1 || IsHomeTeam = 0 && Teamside = 2
+triggerall = Teammode = single && enemy,Teammode = single
+triggerall = Roundsexisted = 0 && enemy,Roundsexisted = 0 && Roundstate = 1 && RoundNO = 1
+trigger1 = stateno != 0 && stateno != 5900 && time = [29,33]
+trigger1 = power >= powerMAX
+trigger1 = life >= lifeMAX
+trigger2 = P2name="Training"&&enemy,Authorname = "stupa"
+trigger3 = P2name="TRM Man"&&enemy,Authorname = "M3"
+trigger4 = P2name="CheckerMan"&&enemy,Authorname = "QK2Key"
+fvar(11) = 1
+;===========================================================================
+;デバッグコード;c・zはゲージヘルパー内
+[State -2,195]
+type = null
+triggerall = var(59)=0&&fvar(11)&&stateno=195
+;ドコキャンＭＡＸ
+trigger1 = command="x"
+trigger1 = 0
+;ＳＰＭＡＸ
+trigger2 = command="a"
+trigger2 = fvar(35):=201
+;モード切替
+trigger3 = command="y"
+trigger3 = 0
+;空ガON/OFF
+trigger4 = command="b"
+trigger4 = var(58):=ifelse(var(58),0,1)
+
+[State -2]
+type = playsnd
+trigger1 = var(59)=0&&fvar(11)&&stateno=195&&command="b"
+value = s992,0
+[State -2]
+type = playsnd
+trigger1 = var(59)=0&&fvar(11)&&stateno=195&&command="y"
+value = s991,0
+;===========================================================================
+;トレーニング開始
+;P1-------------
+[State 1]
+type = Explod
+triggerall = !Ishelper
+trigger1 = roundstate = 1
+trigger1 = fvar(11)
+trigger1 = Teamside = 1
+trigger1 = Numexplod(6041)=0
+Anim = 6041
+ID = 6041
+pos = 2,240
+postype = left
+scale = .5,.5
+ownpal = 1
+bindtime = -1
+removetime = -1
+facing = 1
+ontop = 1
+sprpriority = 10
+supermovetime = 999
+pausemovetime = 999
+;P2-------------
+[State 1]
+type = Explod
+triggerall = !Ishelper
+trigger1 = roundstate = 1
+trigger1 = fvar(11)
+trigger1 = Teamside = 2
+trigger1 = Numexplod(6041)=0
+Anim = 6042
+ID = 6041
+pos = -38,240
+postype = right
+scale = .5,.5
+ownpal = 1
+bindtime = -1
+removetime = -1
+facing = 1
+ontop = 1
+sprpriority = 10
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;直ガ系連続ヒット防止（敵は大抵movetype=I化するのでtarget／movecontactを維持出来ない
+;但しReversalDefのガードポイント・シールドには機能しない
+;[State 1,v5]
+;type = varset
+;triggerall = !Ishelper
+;trigger1 = stateno=215||stateno=410
+;trigger1 = movecontact=1
+;var(5) = 1
+;ignorehitpause = 1
+;supermovetime = 999
+;pausemovetime = 999
+;===========================================================================
+;タッグ時にガード動作を取らせない。ロック式に使用
+[State 1]
+type = attackdist
+triggerall = !Ishelper
+trigger1 = stateno=701||stateno=711||stateno=751
+value = 0
+;===========================================================================
+;手前画面アウトＫＯ攻撃発信
+[State -2]
+type = varset
+triggerall = !Ishelper
+trigger1 = anim=615
+sysfvar(2) = 1
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+[State -2]
+type = varset
+triggerall = !Ishelper
+trigger1 = !(anim=615)
+sysfvar(2) = 0
+;===========================================================================
+;イントロ感知
+[State -2]
+type = explod
+triggerall = !Ishelper
+triggerall = Numexplod(10001)=0
+trigger1 = roundstate=0
+anim = 4649
+ID = 10001
+pos = 0,0
+postype = P1
+ownpal = 1
+
+[State -2]
+type = removeexplod
+triggerall = !Ishelper
+trigger1 = roundstate=2
+trigger1 = ctrl || anim!=0
+ID = 10001
+;===========================================================================
+;サイコシュートヒット
+[State 1]
+type = targetstate
+triggerall = !Ishelper
+trigger1 = Numhelper(1400)||Numhelper(1450)
+trigger1 = Projhit1400=1,<3
+trigger1 = enemynear(var(47)),stateno!=1480
+trigger1 = enemynear(var(47)),movetype=H
+trigger1 = (enemynear(var(47)),stateno!=[150,152])
+value = 1480
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;強制気絶へ
+[state -2,6310]
+type = targetstate
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(17)
+triggerall = roundstate=2
+triggerall = Numhelper(7701)
+triggerall = helper(7701),var(21)<=0
+trigger1 = Numtarget>0
+trigger1 = target,alive
+trigger1 = target,stateno=5000||target,stateno=5010||target,stateno=5020||target,stateno=500||target,stateno=510||target,stateno=1480
+trigger1 = target,gethitvar(hitshaketime)=1
+value = 6310
+;===========================================================================
+;強制ガークラへ
+[state -2,6350]
+type = targetstate
+triggerall = Numhelper(8888)
+triggerall = helper(8888),var(17)
+trigger1 = roundstate=2
+trigger1 = Numhelper(7701)
+trigger1 = helper(7701),var(31)<=0
+trigger1 = Numtarget>0
+trigger1 = target,statetype!=A
+trigger1 = target,alive
+trigger1 = target,stateno=150||target,stateno=152
+trigger1 = target,gethitvar(hitshaketime)=1
+value = 6350
+;===========================================================================
+;テレポ中の被ダメ：座標戻し
+[State -2,terepo]
+type = posset
+triggerall = !Ishelper
+triggerall = movetype=H&&time=0
+trigger1 = var(5)=1500
+x = var(21)
+y = var(22)
+ignorehitpause = 1
+
+;アーマー時の出戻り消費解除
+[State 0]
+type = varset
+triggerall = !Ishelper
+triggerall = !Numhelper(1500);戻り被ダメが出来ない時(既に被ダメ後含む)
+triggerall = Time=1 && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+var(5) = 0
+
+[State 0];消費
+type = poweradd
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = Time=1 && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+value = -1000
+
+[State 0]
+type = explod
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = (time=1||time=5) && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+anim = 1580
+ID = 1580
+pos = 0,0
+postype = P1
+bindtime = 1
+sprpriority = -2-(time=5)
+ownpal = 1
+
+[State 0]
+type = explod
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = (time=1||time=5) && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+anim = 1581
+ID = 1580
+pos = 0,0
+postype = P1
+bindtime = 1
+sprpriority = 5
+ownpal = 1
+
+[state 1]
+type = AfterImage
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = Time=1 && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+time = 30
+length = 10
+;palcolor = 256
+;palinvertall = 0
+palbright = 110,110,10
+palcontrast = 256,200,125
+;palpostbright = 164,164,164
+;paladd = 0,0,0
+;palmul = 0,0,0
+timegap = 2
+framegap = 2
+trans = none;add
+
+[State 1]
+type = PlaySnd
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = Time=1 && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+value = s2,6
+
+;金
+[state -2]
+type = PalFX
+triggerall = !Ishelper
+triggerall = Numhelper(1500)
+triggerall = (Time=[1,10]) && var(5)=1500
+trigger1 = stateno=1000||stateno=1050||stateno=1100||stateno=1150||stateno=1200||stateno=1250
+trigger2 = stateno=1300||stateno=1350||stateno=1400||stateno=1450
+time = time%2=1
+;mul = 250,210,100
+add = 200,180,0
+ignorehitpause = 1
+supermovetime = 999
+pausemovetime = 999
+;===========================================================================
+;勝利後の画面押し
+[State -3]
+type = helper
+trigger1 = !Teammode = simul
+trigger1 = WIN
+trigger1 = !Numhelper(15)
+trigger1 = stateno=180
+Name="oshi"
+ID = 15
+pos = 0,0
+postype = P1
+stateno = 15
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+[State -3]
+type = helper
+trigger1 = !Teammode = simul
+trigger1 = WIN
+trigger1 = !Numhelper(16)
+trigger1 = stateno=180
+Name="oshi2"
+ID = 16
+pos = 0,0
+postype = P1
+stateno = 15
+helpertype = normal
+ownpal = 1
+keyctrl = 0
+;===========================================================================
+;◆◆◆◆◆◆◆◆◆◆発信系◆◆◆◆◆◆◆◆◆◆
+;軸攻撃を発信
+[State 1,sfv1];解除
+type = varset
+triggerall = !Ishelper
+trigger1 = movetype!=A
+sysfvar(1) = 0
+[State 1];手前軸
+type = varset
+triggerall = !Ishelper
+triggerall = movetype=A
+trigger1 = stateno=240
+sysfvar(1) = 1
+[State 1];奥軸
+type = varset
+triggerall = !Ishelper
+triggerall = movetype=A
+trigger1 = stateno=440
+sysfvar(1) = 2
+[State 1];全軸
+type = varset
+triggerall = !Ishelper
+triggerall = movetype=A
+trigger1 = stateno=3000||stateno=3050
+sysfvar(1) = 3
+
+
