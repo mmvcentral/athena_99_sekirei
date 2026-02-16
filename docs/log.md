@@ -1,6 +1,6 @@
 # Development Log / Creator History
 
-Creator: **sekirei** (せきれい)
+Creator: **sekirei**
 
 ---
 
@@ -8,7 +8,7 @@ Creator: **sekirei** (せきれい)
 
 ### [ver1.0] 2016/12/28
 
-**XI仕様**
+**XI Specification**
 - Two-hit combos implemented. Name display set to "Athena99"
 - Various bug fixes: Normal recovery from crouch now works correctly
 - Fixed chain hit detection and palette display
@@ -28,7 +28,7 @@ Creator: **sekirei** (せきれい)
 - **Psycho Ball:** Now connects with movecontact=1
 - **MAX Psycho Ball:** Gauge-based Athena_99 value
 - **Psycho Sword:** More variations for ground skills
-- **投げ^Psycho Ball:** Second compatibility update
+- **Psychic Throw ^ Psycho Ball:** Second compatibility update
 - **Psychic Throw:** Super Cancel added when hitdef connects
 - **Psycho Sword:** Chain update; air and ground Psycho Super now chainable
 - **Chain Throw:** Chain update
@@ -38,17 +38,17 @@ Creator: **sekirei** (せきれい)
 
 ### [ver1.0] 2015/02/02
 
-**追加仕様**
-- Moved to "どんだけー|_除^人" (Don dake) format
+**Additional Specification**
+- Moved to "Don dake" format
 - **Volume:** Single hit
 - **Button assignment:** Before = Far A / After = Crouch A / All = Psycho Ball Super
 - **Taunt:** Taunt on, chain execution with palette
 
 ---
 
-### [verÀ] 2014/05/11
+### [verA] 2014/05/11
 
-**初期公開**
+**Initial Release**
 - First public release of the character
 
 ---
@@ -58,16 +58,16 @@ Creator: **sekirei** (せきれい)
 - **SNK** — Original KOF / Athena character
 - **CAPCOM** — Fighting game systems
 - **Elecbyte** — MUGEN engine
-- **各所様** — Various sites and contributors
+- **Various contributors** — Community sites and contributors
 - **mugenchina** — Community support
 
 ---
 
 ## Source Files (Archived)
 
-The following Japanese text files were used as sources for this log and have been consolidated here:
+The following Japanese text files were used as sources for this log and have been consolidated here. Original filenames and content are documented in [TRANSLATION.md](TRANSLATION.md).
 
-- `アテナ99履歴.txt` — Version history (アテナ99履歴)
-- `アテナ99りどみ.txt` — Gameplay/rhythm documentation
-- `詳細.txt` — Detailed frame data and specifications
-- `アテナ99一覧.txt` — State and variable reference list
+- **Athena99 Reki** — Version history
+- **Athena99 Rhythm** — Gameplay/rhythm documentation
+- **Shousai (Details)** — Detailed frame data and specifications
+- **Athena99 Ichiran (List)** — State and variable reference list

@@ -70,6 +70,7 @@ Japanese-to-English translations for comments in CNS, CMD, and DEF files.
 | しゃがみ投げ | Crouch throw |
 | 空中投げ | Air throw |
 | 挑発 | Taunt |
+| 近・遠 | Close / Far (Phoenix Arrow proximity variants) |
 
 ---
 
@@ -119,7 +120,7 @@ Japanese-to-English translations for comments in CNS, CMD, and DEF files.
 |----------|---------|
 | 共通 | Common |
 | 通常攻撃 | Normal attack |
-| 投げ判定 | Throw判定 (throw hit detection) |
+| 投げ判定 | Throw hit detection |
 | ダッシュ判定 | Dash判定 |
 | 前転 | Forward roll |
 | 後転 | Back roll |
@@ -226,3 +227,142 @@ Source: 詳細.txt (character details document)
 | パワーゲージ | Power gauge |
 | 設定は以下 | Settings below |
 | 設定用 | For configuration |
+| 設定用ステート | Config helper state |
+| 共通設定 | Common settings |
+| 空中ガード | Air guard |
+| 空中ガード判定 | Air guard detection |
+| 空中ガード・無効 | Air guard disabled |
+| 空中ガード・有効 | Air guard enabled |
+| 空中ガード・無効 | Air guard disabled |
+| ステート設定 | State settings |
+| デフォルト値 | Default value |
+| パートナー | Partner |
+
+---
+
+## athena_99-S.cns (Special Moves)
+
+| Original (Japanese) | English |
+|---------------------|---------|
+| 必殺技 | Special move |
+| 近・フェニックス | Close Phoenix Arrow |
+| 遠・フェニックス | Far Phoenix Arrow |
+| 近・ Psycho Sword | Close Psycho Sword |
+| 遠・ Psycho Sword | Far Psycho Sword |
+| 近・ Psycho Reflector | Close Psycho Reflector |
+| 遠・ Psycho Reflector | Far Psycho Reflector |
+| テレ技からの無敵 | Invincibility from teleport skill |
+| 空中・ Psycho Ball | Air Psycho Ball |
+| 空中・ Psycho Ball | Air Psycho Ball |
+| 近・ Shining Crystal Bit | Close Shining Crystal Bit |
+| 遠・ Shining Crystal Bit | Far Shining Crystal Bit |
+| 地上・投げ・テレ | Ground Psychic Throw |
+| 空中・投げ・テレ | Air Psychic Throw |
+| 空中・投げ・テレ・上段 | Air Psychic Throw (high) |
+| 空中・投げ・テレ・下段 | Air Psychic Throw (low) |
+| 全テレ・終了 | All Psychic Throw end |
+| テレ技 | Teleport skill |
+| 投げ・テレ | Psychic Throw |
+
+---
+
+## athena_99-sys.cns (Super Moves)
+
+| Original (Japanese) | English |
+|---------------------|---------|
+| スーパーキャンセル | Super Cancel |
+| ビット | Bit (Shining Crystal Bit helper) |
+| ビット^メイン | Bit Main (helper 3070) |
+| ビット^サブ | Bit Sub (helper 3071) |
+| シュート | Shoot |
+| 前段 | First hit |
+| 後段 | Follow-up |
+| 前段^前段 | First hit (ground) |
+| 前段^後段 | First hit (air) |
+| 後段^前段 | Follow-up (ground) |
+| 後段^後段 | Follow-up (air) |
+| 終了時の変数 | End variable |
+| 分身 | Clone (bunshin helper) |
+| キャンセル | Cancel |
+| キャンセル段 | Cancel segment |
+| 前進 | Forward |
+| 後進 | Back |
+| 地上 | Ground |
+| 空中 | Air |
+| 地上^空中 | Ground ^ Air |
+| 分身^上段 | Clone high |
+| 分身^下段 | Clone low |
+| 全分身^終了 | All clones end |
+| 分身技 | Clone skill |
+| 当たり | Hit |
+| 当たり回数 | Hit count |
+
+---
+
+## docs/log.md (Creator History)
+
+| Original (Japanese) | English |
+|---------------------|---------|
+| せきれい | sekirei (creator name) |
+| XI仕様 | XI Specification |
+| 追加仕様 | Additional Specification |
+| 初期公開 | Initial Release |
+| 各所様 | Various contributors |
+| アテナ99履歴.txt | Athena99 Reki (Version history) |
+| アテナ99りどみ.txt | Athena99 Rhythm (Gameplay documentation) |
+| 詳細.txt | Shousai (Details) |
+| アテナ99一覧.txt | Athena99 Ichiran (List) |
+
+---
+
+## Mojibake / Shift-JIS Comments (H, E, 2, 3 CNS)
+
+These comments appear garbled when read as UTF-8 (source files are Shift-JIS). Inferred translations from context:
+
+### athena_99-H.cns (Psycho Ball Super / LV1-LV2)
+| Context / Inferred | English |
+|-------------------|---------|
+| 前 (var 2=0) | Front / Ground version |
+| 後 (var 2=1) | Back / Air version |
+| 後air | Back air |
+| 共通専用 | Common dedicated |
+| 外段 | Outer segment |
+| パワー消費 | Power consumption |
+| 技判定取消 | Skill cancel |
+| 終了時の変数 | End variable |
+| ビットのクライアント | Bit client |
+| 特殊設定 | Special setting |
+| 近air | Close air |
+
+### athena_99-E.cns (Air / Hit States)
+| Context / Inferred | English |
+|-------------------|---------|
+| 空のベース | Air base |
+| 音は voice で指定 | Sound specified via voice |
+| リフレクター-HIT | Psycho Reflector hit |
+| 接地判定 | Ground contact detection |
+| 共通専用 | Common dedicated |
+| 10000状態 | State 10000 (special) |
+
+### athena_99-2.cns (Sysvar / Helper Coordinates)
+| Context / Inferred | English |
+|-------------------|---------|
+| 以下は参照不可 | Cannot reference below |
+| sysvar には := が使えない | sysvar does not support := |
+| 全キャラの座標を取得 | Get all character coordinates |
+| ルートの座標取得用、AIにも使える | Route coordinates for AI |
+| フェニックス (1000/1050) | Phoenix Arrow helper |
+| シャイン (1400/1450) | Shining Crystal Bit helper |
+| ビッグ (3080/3180/3181) | Big (Psycho Ball Super helper) |
+
+### athena_99-3.cns (AI / Config)
+| Context / Inferred | English |
+|-------------------|---------|
+| AI切替 | AI switch |
+| WIN用 | For WIN state |
+| 新用 | For new |
+| AI個別表示 | AI individual display |
+| AILV設定 | AILV setting |
+| コンフィグ用 | Config helper |
+| 設定用補足 | Config supplement |
+| 空中キー入力/他 | Air key input / other |

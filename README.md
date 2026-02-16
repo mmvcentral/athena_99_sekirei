@@ -7,10 +7,10 @@ A M.U.G.E.N character based on **Athena Asamiya** from *The King of Fighters '99
 ## Character Introduction
 
 ### Character Name
-**Athena Asamiya** (アテナ・アサミヤ) — Display name: Athena_99
+**Athena Asamiya** — Display name: Athena_99
 
 ### Original Creator
-**sekirei** (せきれい)
+**sekirei**
 
 ### Character Storyline
 Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She first appeared in *Psycho Soldier* (1986) and has been a recurring character in the KOF franchise. In KOF'99, Athena fights as part of the "Psycho Soldier" team alongside Sie Kensou and Bao. She uses her psychic powers for both offensive and defensive techniques, combining martial arts with supernatural abilities. Her signature moves include the Phoenix Arrow (psychic arrow), Psychic Ball, and Shining Crystal Bit.
@@ -61,7 +61,7 @@ Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She f
 #### Special Move States (1000–1999)
 | State | Move | Command |
 |-------|------|---------|
-| 1000/1050 | Phoenix Arrow (近・遠) | 214x / 214y |
+| 1000/1050 | Phoenix Arrow (close/far) | 214x / 214y |
 | 1100/1150 | Psycho Sword | 623x / 623y |
 | 1200/1250 | Psycho Reflector | 214a / 214b |
 | 1300/1350 | Psycho Ball (ground/air) | 41236x / 41236y |
@@ -85,6 +85,24 @@ Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She f
 
 ### Skill System
 
+#### Special Moves (Detailed)
+| Skill | State(s) | Command | Description |
+|-------|----------|---------|--------------|
+| Phoenix Arrow | 1000, 1050 | 214x, 214y | Psychic projectile; close (x) vs far (y) versions |
+| Psycho Sword | 1100, 1150 | 623x, 623y | Dragon-punch style slash; ground and air cancelable |
+| Psycho Reflector | 1200, 1250 | 214a, 214b | Reflects projectiles; spawns helper ID 1200/1250 |
+| Psycho Ball | 1300, 1350 | 41236x, 41236y | Charge forward projectile; ground (1300/1350) and air variants |
+| Shining Crystal Bit | 1400, 1450 | 236a, 236b | Crystal projectile; spawns helper for projID 1400 |
+| Psychic Throw | 1500–1570 | 236a, 236b | Teleport grab; ground (1500/1550) and air (1510/1560) |
+
+#### Super Moves (Detailed)
+| Super | State(s) | Command | Power | Notes |
+|-------|----------|---------|-------|-------|
+| Psycho Ball Super LV1 | 3000 | 6321463214x/y | 1000 | Ground/air; SC cancelable |
+| Psycho Ball Super LV2 | 3050 | 6321463214xy/c | 3000 (2000 team) | Max mode; bit helpers 3070/3071 |
+| Shining Crystal Bit LV1 | 3200 | 236236a/b | 1000 | Air only |
+| Shining Crystal Bit LV2 | 3250 | 236236ab/c | 3000 (2000 team) | Air only; clone helpers 3220–3224 |
+
 #### Command Inputs (Numpad Notation)
 - **6321463214** — Half-circle back ×2 + button (LV1/LV2 Psycho Ball Super)
 - **236236** — Double quarter-circle forward (Shining Crystal Bit, air)
@@ -93,10 +111,33 @@ Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She f
 - **214** — Charge back (Phoenix Arrow, Psycho Reflector)
 - **236** — Quarter-circle forward (Psychic Throw, Shining Crystal Bit)
 
-#### Animation Counterpart Mapping
-- **Stand X/Y/A/B** → States 200/210/230/240 (light) or 205/215/235/245 (close)
-- **Crouch X/Y/A/B** → States 400/410/430/440
-- **Air X/Y/A/B** → States 600/610/630/640 (neutral) or 605/615/635/645 (with horizontal velocity)
+### Animation Counterpart Mapping
+
+| Animation Type | States | Notes |
+|----------------|--------|-------|
+| Far stand X/Y/A/B | 200, 210, 230, 240 | Light attacks |
+| Close stand X/Y/A/B | 205, 215, 235, 245 | Proximity-based (P2bodydist) |
+| Crouch X/Y/A/B | 400, 410, 430, 440 | Low attacks |
+| Air X/Y/A/B (neutral) | 600, 610, 630, 640 | vel X = 0 |
+| Air X/Y/A/B (moving) | 605, 615, 635, 645 | vel X ≠ 0 |
+| Counter hit recovery | 216 | From stand normals |
+| Forward roll | 107 | Recovery option |
+| Back roll | 108, 109 | Recovery option |
+| Air recovery | 112 | From knockdown (Numexplod 565656) |
+
+### Animation–State Counterparty Reference
+
+| State | Animation | HitDef Element | Cancel Paths |
+|-------|-----------|----------------|--------------|
+| 200–245 | Stand normals | animelem 2–4 | → 0, 300, 107, 108 |
+| 400–440 | Crouch normals | animelem 2–3 | → 11, 107, 108 |
+| 600–645 | Air normals | animelem 2–4 | → 52 (land) |
+| 1000/1050 | Phoenix Arrow | animelem 5 | Helper 1000/1050, projID 1000 |
+| 1100/1150 | Psycho Sword | animelem 3–7 | → 1170 (land) |
+| 1200/1250 | Psycho Reflector | animelem 2/5 | Helper 1200/1250, projID 1200 |
+| 1300/1350 | Psycho Ball | animelem 3–11 | → 1370 (land) |
+| 1400/1450 | Shining Crystal Bit | animelem 4/12 | Helper 1400/1450, projID 1400 |
+| 1500–1570 | Psychic Throw | animelem 5–8 | Helper 1500, TargetBind |
 
 ### Variable Usage (Key Vars)
 - **var(6):** System mode (400 = team mode)
@@ -104,6 +145,18 @@ Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She f
 - **var(28):** Helper/partner flag
 - **var(59):** AI level
 - **var(47):** Enemy target ID
+- **var(36):** Chain throw / combo flag
+- **var(3):** Trip guard flag (Crouch B knockdown)
+
+### Projectile and Helper IDs
+| ID | Source | Type |
+|----|--------|------|
+| 1000 | Phoenix Arrow (1000/1050) | Projectile |
+| 1200 | Psycho Reflector (1200/1250) | Projectile |
+| 1400 | Shining Crystal Bit (1400/1450) | Projectile |
+| 1500 | Psychic Throw helper | Helper (tama) |
+| 3070/3071 | Psycho Ball Super bits | Helper (bit-Main, bit-Sub) |
+| 3220–3224 | Shining Crystal Bit clones | Helper (bunshin) |
 
 ---
 
@@ -112,7 +165,3 @@ Athena Asamiya is a psychic idol from SNK's *The King of Fighters* series. She f
 **Creative Circle License**
 
 This character is an edit/adaptation by the original author (sekirei). The character design and assets are derived from SNK's *The King of Fighters* series. This work is shared for non-commercial MUGEN use. Original SNK/CAPCOM/Elecbyte credits apply. See [docs/log.md](docs/log.md) for full acknowledgments.
-
----
-
-*For Japanese comment translations, see [docs/TRANSLATION.md](docs/TRANSLATION.md).*
