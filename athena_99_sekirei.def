@@ -1,4 +1,5 @@
 ;[mugen-WIN-only-def]
+; See docs/TRANSLATION.md for Japanese comment translations
 [Info]
 name="Athena99"
 displayname = "Athena_99"

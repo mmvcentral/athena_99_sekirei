@@ -1,5 +1,6 @@
 ;============================================================================
 ;コンフィグヘルパー
+; See docs/TRANSLATION.md for Japanese comment translations
 [Statedef 8888]
 type = S
 movetype = I

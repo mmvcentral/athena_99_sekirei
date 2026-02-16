@@ -1,6 +1,7 @@
 ;ƒRƒ‚ƒ“Œn
 ;===========================================================================
 ;‘Ò‹@
+; See docs/TRANSLATION.md for Japanese comment translations
 [Statedef 0]
 type = S
 physics = S
@@ -452,7 +453,7 @@ trigger2 = enemynear(var(47)),Movetype = A || enemynear(var(47)),movetype = I
 trigger3 = enemynear(var(47)),statetype = S || enemynear(var(47)),statetype = C
 trigger3 = enemynear(var(47)),Movetype = A && enemynear(var(47)),vel X > 0
 trigger4 = enemynear(var(47)),statetype = S || enemynear(var(47)),statetype = C
-trigger4 = enemynear(var(47)),Movetype = A && Enemy,NumProj >= 0
+trigger4 = enemynear(var(47)),Movetype = A && Enemy,NumProj >= 0
 sysvar(1) = 1
 
 [State 40, 3]

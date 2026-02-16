@@ -119,7 +119,7 @@ Japanese-to-English translations for comments in CNS, CMD, and DEF files.
 |----------|---------|
 | 共通 | Common |
 | 通常攻撃 | Normal attack |
-| 投げ判定 | Throw判定 |
+| 投げ判定 | Throw判定 (throw hit detection) |
 | ダッシュ判定 | Dash判定 |
 | 前転 | Forward roll |
 | 後転 | Back roll |
@@ -208,3 +208,21 @@ Source: 詳細.txt (character details document)
 | しゃがみ | Crouch |
 | 近立 | Close stand |
 | 遠立 | Far stand |
+
+---
+
+## !!!config.txt (Config Helper)
+
+| Original | English |
+|----------|---------|
+| ランダム | Random |
+| 共通技 | Common skill |
+| 通常攻撃 | Normal attack |
+| 攻撃・キー | Attack・Guard |
+| 攻撃・1最高〜10最高 | Attack・1 max ~ 10 max |
+| しゃがみキー | Crouch guard |
+| 連続キー | Chain guard |
+| 攻撃・キー管理 | Attack・Guard management |
+| パワーゲージ | Power gauge |
+| 設定は以下 | Settings below |
+| 設定用 | For configuration |
